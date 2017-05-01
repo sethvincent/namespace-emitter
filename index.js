@@ -16,7 +16,7 @@ module.exports = function createNamespaceEmitter () {
   var emitter = { _fns: {} }
 
   /**
-  * Emit an event. Optionally namespace the event. Separate the namespace and event with a `:`
+  * Emit an event. Optionally namespace the event. Handlers are fired in the order in which they were added with exact matches taking precedence. Separate the namespace and event with a `:`
   * @name emit
   * @param {String} event – the name of the event, with optional namespace
   * @param {...*} data – data variables that will be passed as arguments to the event listener

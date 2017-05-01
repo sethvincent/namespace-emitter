@@ -22,14 +22,24 @@ emitter.on('example', function () {
 })
 
 emitter.emit('example')
+// -> example event emitted
+// -> all events emitted example
 
 emitter.on('demo', function () {
   console.log('multiple events with `demo` namespace emitted', this.event)
 })
 
 emitter.emit('demo:cool')
+// -> all events emitted demo:cool
+// -> multiple events with `demo` namespace emitted demo:cool
+
 emitter.emit('demo:awesome')
+// -> all events emitted demo:awesome
+// -> multiple events with `demo` namespace emitted demo:awesome
+
 emitter.emit('demo:great')
+// -> all events emitted demo:great
+// -> multiple events with `demo` namespace emitted demo:great
 ```
 
 ## API
@@ -54,7 +64,7 @@ emitter.on('example', function () {
 
 ### emit
 
-Emit an event. Optionally namespace the event. Separate the namespace and event with a `:`
+Emit an event. Optionally namespace the event. Handlers are fired in the order in which they were added with exact matches taking precedence. Separate the namespace and event with a `:`
 
 **Parameters**
 
