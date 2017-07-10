@@ -126,6 +126,21 @@ test('unsubscribe event handler that has been subscribed twice', function (t) {
   t.end()
 })
 
+test('unsubscribe one event handler, but keep others', function (t) {
+  t.plan(1)
+
+  var emitter = createEmitter()
+  function fn () { t.fail('should not be called') }
+  function fn2 () { t.pass('should be called') }
+
+  emitter.on('example', fn)
+  emitter.on('example', fn2)
+  emitter.off('example', fn)
+
+  emitter.emit('example')
+  t.end()
+})
+
 test('emit event when unsubscribed in event callback', function (t) {
   var emitter = createEmitter()
 
