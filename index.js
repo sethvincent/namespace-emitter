@@ -65,7 +65,7 @@ module.exports = function createNamespaceEmitter () {
 
   /**
   * Stop listening to an event. Stop all listeners on an event by only passing the event name. Stop a single listener by passing that event handler as a callback.
-  * You must be explicit about what will be unsubscribed: `emitter.off('demo')` will unsubscribe an `emitter.on('demo')` listener, 
+  * You must be explicit about what will be unsubscribed: `emitter.off('demo')` will unsubscribe an `emitter.on('demo')` listener,
   * `emitter.off('demo:example')` will unsubscribe an `emitter.on('demo:example')` listener
   * @name off
   * @param {String} event
@@ -78,9 +78,10 @@ module.exports = function createNamespaceEmitter () {
     var keep = []
 
     if (event && fn) {
-      for (var i = 0; i < this._fns.length; i++) {
-        if (this._fns[i] !== fn) {
-          keep.push(this._fns[i])
+      var fns = this._fns[event]
+      for (var i = 0; i < fns.length; i++) {
+        if (fns[i] !== fn) {
+          keep.push(fns[i])
         }
       }
     }
