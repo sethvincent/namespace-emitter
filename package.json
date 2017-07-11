@@ -24,10 +24,12 @@
   },
   "homepage": "https://github.com/sethvincent/namespace-emitter#readme",
   "devDependencies": {
-    "budo": "^7.0.4",
+    "budo": "^10.0.3",
     "documentation-readme": "^2.1.1",
-    "standard": "^5.4.1",
+    "nanobench": "^2.1.0",
+    "nanobus": "^4.2.0",
+    "standard": "^10.0.2",
     "tap-spec": "^4.1.1",
-    "tape": "^4.2.2"
+    "tape": "^4.7.0"
   }
 }
