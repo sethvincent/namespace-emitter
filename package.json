@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build-docs": "documentation-readme -s 'API'",
-    "test": "standard && tape test.js | tap-spec",
+    "lint": "standard",
+    "test": "tape test.js | tap-spec",
     "start": "budo example.js --live"
   },
   "repository": {
@@ -27,7 +28,6 @@
     "budo": "^10.0.3",
     "documentation-readme": "^2.1.1",
     "nanobench": "^2.1.0",
-    "nanobus": "^4.2.0",
     "standard": "^10.0.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.7.0"

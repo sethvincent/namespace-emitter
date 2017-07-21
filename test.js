@@ -178,3 +178,23 @@ test('handler only called once if namespaced', function (t) {
   t.equal(count, 1)
   t.end()
 })
+
+test('both namespaces and wildcard listeners are called', function (t) {
+  var emitter = createEmitter()
+  var count = 0
+
+  emitter.on('*', function (data) {
+    t.ok(data.example)
+    count++
+  })
+
+  emitter.on('example', function (data) {
+    t.ok(this.event)
+    t.ok(data.example)
+    count++
+  })
+
+  emitter.emit('example:first', { example: true })
+  t.equal(count, 2)
+  t.end()
+})

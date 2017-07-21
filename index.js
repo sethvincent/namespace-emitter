@@ -13,23 +13,25 @@
 * })
 */
 module.exports = function createNamespaceEmitter () {
-  var emitter = { _fns: {} }
+  var emitter = {}
+  var _fns = emitter._fns = {}
 
   /**
   * Emit an event. Optionally namespace the event. Handlers are fired in the order in which they were added with exact matches taking precedence. Separate the namespace and event with a `:`
   * @name emit
   * @param {String} event – the name of the event, with optional namespace
-  * @param {...*} data – data variables that will be passed as arguments to the event listener
+  * @param {...*} data – up to 6 arguments that are passed to the event listener
   * @example
   * emitter.emit('example')
   * emitter.emit('demo:test')
   * emitter.emit('data', { example: true}, 'a string', 1)
   */
-  emitter.emit = function emit (event) {
-    var args = [].slice.call(arguments, 1)
-    var namespaced = namespaces(event)
-    if (this._fns[event]) emitAll(event, this._fns[event], args)
-    if (namespaced) emitAll(event, namespaced, args)
+  emitter.emit = function emit (event, arg1, arg2, arg3, arg4, arg5, arg6) {
+    var toEmit = getListeners(event)
+
+    if (toEmit.length) {
+      emitAll(event, toEmit, [arg1, arg2, arg3, arg4, arg5, arg6])
+    }
   }
 
   /**
@@ -42,8 +44,11 @@ module.exports = function createNamespaceEmitter () {
   * emitter.on('demo', function () {})
   */
   emitter.on = function on (event, fn) {
-    if (typeof fn !== 'function') { throw new Error('callback required') }
-    (this._fns[event] = this._fns[event] || []).push(fn)
+    if (!_fns[event]) {
+      _fns[event] = []
+    }
+
+    _fns[event].push(fn)
   }
 
   /**
@@ -79,7 +84,10 @@ module.exports = function createNamespaceEmitter () {
 
     if (event && fn) {
       var fns = this._fns[event]
-      for (var i = 0; i < fns.length; i++) {
+      var i = 0
+      var l = fns.length
+
+      for (i; i < l; i++) {
         if (fns[i] !== fn) {
           keep.push(fns[i])
         }
@@ -89,19 +97,35 @@ module.exports = function createNamespaceEmitter () {
     keep.length ? this._fns[event] = keep : delete this._fns[event]
   }
 
-  function namespaces (e) {
-    var out = []
-    var args = e.split(':')
-    var fns = emitter._fns
-    Object.keys(fns).forEach(function (key) {
-      if (key === '*') out = out.concat(fns[key])
-      if (args.length === 2 && args[0] === key) out = out.concat(fns[key])
-    })
+  function getListeners (e) {
+    var out = _fns[e] ? _fns[e] : []
+    var idx = e.indexOf(':')
+    var args = (idx === -1) ? [e] : [e.substring(0, idx), e.substring(idx + 1)]
+
+    var keys = Object.keys(_fns)
+    var i = 0
+    var l = keys.length
+
+    for (i; i < l; i++) {
+      var key = keys[i]
+      if (key === '*') {
+        out = out.concat(_fns[key])
+      }
+
+      if (args.length === 2 && args[0] === key) {
+        out = out.concat(_fns[key])
+        break
+      }
+    }
+
     return out
   }
 
   function emitAll (e, fns, args) {
-    for (var i = 0; i < fns.length; i++) {
+    var i = 0
+    var l = fns.length
+
+    for (i; i < l; i++) {
       if (!fns[i]) break
       fns[i].event = e
       fns[i].apply(fns[i], args)
