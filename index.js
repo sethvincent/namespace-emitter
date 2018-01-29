@@ -85,7 +85,7 @@ module.exports = function createNamespaceEmitter () {
     if (event && fn) {
       var fns = this._fns[event]
       var i = 0
-      var l = fns.length
+      var l = fns ? fns.length : 0
 
       for (i; i < l; i++) {
         if (fns[i] !== fn) {
