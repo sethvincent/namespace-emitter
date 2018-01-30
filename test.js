@@ -52,6 +52,15 @@ test('remove all listeners of an event', function (t) {
   t.end()
 })
 
+test('remove when no listeners are registered', function (t) {
+  var emitter = createEmitter()
+
+  t.doesNotThrow(function () {
+    emitter.off('example', function () {})
+  })
+  t.end()
+})
+
 test('listen to all events', function (t) {
   var emitter = createEmitter()
   var count = 0
