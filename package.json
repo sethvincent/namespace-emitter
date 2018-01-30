@@ -1,6 +1,6 @@
 {
   "name": "namespace-emitter",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "tiny event emitter with namespaces",
   "main": "index.js",
   "scripts": {
